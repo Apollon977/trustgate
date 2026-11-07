@@ -7,7 +7,7 @@ name = "trustgate"
 version = "0.1.0"
 description = "See everything a repository will run when you open, install or build it: IDE tasks, AI agent hooks, npm lifecycle scripts, dev containers and more."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Kirtan Bhatt" }]
 keywords = ["security", "supply-chain", "vscode", "claude-code", "devcontainer", "npm", "sarif", "devsecops"]
