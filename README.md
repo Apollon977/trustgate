@@ -16,7 +16,7 @@ routine configuration, which makes them easy to miss in review.
 trustgate finds every one of those auto-run entry points, tells you what each one will run
 and when, and fails CI when something new shows up.
 
-- **Zero dependencies.** Python 3.9+ standard library only. Nothing to trust but this code.
+- **Zero dependencies.** Python 3.10+ standard library only. Nothing to trust but this code.
 - **Offline.** Reads files and nothing else: no network, no execution, no telemetry.
 - **Built for review and CI.** Text, JSON and SARIF output, GitHub Action, pre-commit hook.
 
@@ -130,13 +130,13 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - uses: kirtanbhatt10/trustgate@main
         with:
           fail-on: high
-      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: trustgate.sarif
