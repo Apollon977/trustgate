@@ -12,8 +12,8 @@ python -m unittest discover -s tests -t tests -v
 python -m trustgate scan .
 ```
 
-No virtualenv or dependencies are needed. Python 3.9 is the oldest supported version, so
-avoid newer syntax such as `match` statements and `X | Y` type unions.
+No virtualenv or dependencies are needed. Python 3.10 is the oldest supported version, so
+avoid syntax newer than that.
 
 ## Adding a rule
 
