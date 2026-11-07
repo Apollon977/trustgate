@@ -1,0 +1,41 @@
+name: trustgate
+description: Find IDE tasks, AI agent hooks, install scripts and other code that runs automatically from a repository.
+author: Kirtan Bhatt
+branding:
+  icon: shield
+  color: purple
+
+inputs:
+  path:
+    description: Directory to scan.
+    default: "."
+  fail-on:
+    description: Fail the step if a finding is at or above this severity (info, low, medium, high, critical).
+    default: high
+  sarif-file:
+    description: Also write a SARIF report to this path (leave empty to skip).
+    default: trustgate.sarif
+
+outputs:
+  sarif-file:
+    description: Path of the SARIF report, if one was written.
+    value: ${{ steps.scan.outputs.sarif-file }}
+
+runs:
+  using: composite
+  steps:
+    - id: scan
+      shell: bash
+      env:
+        TG_PATH: ${{ inputs.path }}
+        TG_FAIL_ON: ${{ inputs.fail-on }}
+        TG_SARIF: ${{ inputs.sarif-file }}
+        PYTHONPATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        PY="$(command -v python3 || command -v python)"
+        if [ -n "$TG_SARIF" ]; then
+          "$PY" -m trustgate scan "$TG_PATH" --format sarif --output "$TG_SARIF" --fail-on critical --no-color || true
+          echo "sarif-file=$TG_SARIF" >> "$GITHUB_OUTPUT"
+        fi
+        "$PY" -m trustgate scan "$TG_PATH" --fail-on "$TG_FAIL_ON" --no-color
