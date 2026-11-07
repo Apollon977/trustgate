@@ -1,0 +1,7 @@
+- id: trustgate
+  name: trustgate
+  description: Flag code that runs automatically when the repository is opened, installed or built.
+  entry: trustgate scan
+  language: python
+  pass_filenames: false
+  always_run: true
