@@ -208,6 +208,7 @@ class NodeTests(unittest.TestCase):
         with TempRepo(files) as root:
             result = scan(str(root))
         self.assertEqual(sorted(f.line for f in result.findings), [1, 2])
+        self.assertEqual(rules_of(result), ["TG301", "TG301"])
 
     def test_npmrc(self):
         files = {".npmrc": "script-shell=./sh\n//registry.npmjs.org/:_authToken=npm_abc\n"
@@ -216,6 +217,7 @@ class NodeTests(unittest.TestCase):
         with TempRepo(files) as root:
             result = scan(str(root))
         self.assertEqual([f.line for f in result.findings], [2, 1, 4])
+        self.assertEqual(rules_of(result), ["TG302", "TG302", "TG302"])
 
     def test_node_modules_skipped_unless_requested(self):
         files = {"node_modules/dep/package.json": {"scripts": {"install": "node i.js"}}}

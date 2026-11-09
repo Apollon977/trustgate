@@ -10,6 +10,7 @@ All notable changes are documented here. The format follows
 
 - `trustgate rules TG100` explains a single rule: name, default severity, fix and a link to the docs.
   Lower-case ids work too; an unknown id exits with code 2.
+- `test_every_rule_has_a_test` in `tests/test_meta.py`: verifies that every registered rule in `RULES` is covered by at least one test. (#11)
 
 ## [0.2.0] - 2026-11-09
 
