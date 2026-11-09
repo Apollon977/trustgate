@@ -89,6 +89,38 @@ class GradleTests(unittest.TestCase):
         self.assertEqual(result.findings[0].severity, Severity.MEDIUM)
 
 
+class RustTests(unittest.TestCase):
+    def test_build_rs_is_detected(self):
+        files = {
+            "build.rs": 'fn main() { println!("cargo:rerun-if-changed=build.rs"); }\n',
+            "crates/foo/build.rs": 'fn main() {}\n',
+        }
+        with TempRepo(files) as root:
+            result = scan(str(root))
+        findings = [f for f in result.findings if f.rule_id == "TG801"]
+        self.assertEqual(len(findings), 2)
+        paths = sorted(f.path for f in findings)
+        self.assertEqual(paths, ["build.rs", "crates/foo/build.rs"])
+        for f in findings:
+            self.assertEqual(f.severity, Severity.LOW)
+            self.assertEqual(f.line, 1)
+
+    def test_custom_cargo_toml_build(self):
+        text = '[package]\nname = "mycrate"\nversion = "0.1.0"\nbuild = "custom_build.rs"\n'
+        with TempRepo({"Cargo.toml": text}) as root:
+            result = scan(str(root))
+        self.assertEqual(rules_of(result), ["TG801"])
+        finding = result.findings[0]
+        self.assertEqual(finding.line, 4)
+        self.assertEqual(finding.severity, Severity.LOW)
+        self.assertIn("custom_build.rs", finding.message)
+
+    def test_default_or_false_build_not_flagged_in_cargo_toml(self):
+        text = '[package]\nname = "clean"\nbuild = "build.rs"\n\n[dependencies]\n'
+        with TempRepo({"Cargo.toml": text}) as root:
+            self.assertEqual(rules_of(scan(str(root))), [])
+
+
 class ComposerTests(unittest.TestCase):
     def test_composer_event_scripts(self):
         content = {

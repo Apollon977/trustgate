@@ -27,6 +27,7 @@ AUTORUN_NAMES = {
     "pyproject.toml", "gradle-wrapper.properties",
     "composer.json",
     ".nvim.lua", ".nvimrc", ".exrc", ".vimrc",
+    "build.rs", "Cargo.toml",
 }
 
 # Instruction files that AI coding agents read and follow. They do not run code, so they are

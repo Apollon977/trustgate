@@ -1,4 +1,4 @@
-"""JVM build tools: the Gradle wrapper, which IDEs run when a project is imported."""
+"""JVM and Rust build tools: Gradle wrapper and Cargo build scripts."""
 
 from __future__ import annotations
 
@@ -31,6 +31,35 @@ def _wrapper(ctx: Context, rel: str) -> None:
                 severity=sev, evidence=url)
 
 
+CARGO_BUILD = re.compile(r'^\s*build\s*=\s*["\'](.+?)["\']\s*$')
+
+
+def _rust(ctx: Context) -> None:
+    for rel in ctx.matching(lambda p: p.name == "build.rs"):
+        ctx.add("TG801", rel, "Cargo and rust-analyzer run build.rs when the project is built or opened.",
+                line=1)
+
+    for rel in ctx.matching(lambda p: p.name == "Cargo.toml"):
+        text = ctx.text(rel)
+        if not text:
+            continue
+        in_package = False
+        for lineno, line in enumerate(text.splitlines(), 1):
+            stripped = line.strip()
+            if stripped.startswith("["):
+                in_package = stripped == "[package]"
+                continue
+            if in_package:
+                m = CARGO_BUILD.match(line)
+                if m:
+                    script = m.group(1)
+                    if script != "build.rs":
+                        ctx.add("TG801", rel,
+                                f"Cargo.toml specifies a custom build script '{script}' that runs on build or open.",
+                                line=lineno, evidence=script)
+
+
 def check(ctx: Context) -> None:
     for rel in ctx.matching(lambda p: p.name == "gradle-wrapper.properties"):
         _wrapper(ctx, rel)
+    _rust(ctx)

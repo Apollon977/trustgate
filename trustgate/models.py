@@ -131,6 +131,9 @@ _rule("TG701", "workflow-untrusted-exec", Severity.HIGH,
 _rule("TG800", "gradle-wrapper-distribution", Severity.MEDIUM,
       "The Gradle wrapper downloads Gradle from a non-official location; IDEs run it when the project is imported.",
       "Point distributionUrl at https://services.gradle.org/distributions/ and add distributionSha256Sum.")
+_rule("TG801", "rust-build-script", Severity.LOW,
+      "Cargo and rust-analyzer execute build scripts when the project is compiled or opened.",
+      "Review the build script before opening the project in an editor with rust-analyzer enabled.")
 
 
 @dataclass

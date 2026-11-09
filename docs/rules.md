@@ -32,6 +32,7 @@ Every finding has a rule id, a default severity and a fix. Some findings are rai
 | TG700 | `workflow-secret-dump` | critical | A GitHub Actions workflow serialises the entire secrets context. | Delete the workflow and rotate every repository and organisation secret. |
 | TG701 | `workflow-untrusted-exec` | high | A workflow interpolates attacker-controlled event text directly into a shell step. | Pass the value through an environment variable and never execute it. |
 | TG800 | `gradle-wrapper-distribution` | medium | The Gradle wrapper downloads Gradle from a non-official location; IDEs run it when the project is imported. | Point distributionUrl at https://services.gradle.org/distributions/ and add distributionSha256Sum. |
+| TG801 | `rust-build-script` | low | Cargo and rust-analyzer execute build scripts when the project is compiled or opened. | Review the build script before opening the project in an editor with rust-analyzer enabled. |
 
 ## Severity adjustments
 

@@ -13,6 +13,7 @@ All notable changes are documented here. The format follows
 - `test_every_rule_has_a_test` in `tests/test_meta.py`: verifies that every registered rule in `RULES` is covered by at least one test. (#11)
 - `TG304 composer-script`: flags Composer event scripts in `composer.json` that run automatically on install, update, or autoload dump (#7).
 - `TG602 vim-exrc`: flags root-level Neovim / Vim configuration files (`.nvim.lua`, `.nvimrc`, `.exrc`, `.vimrc`) that run automatically when the editor opens the directory if `exrc` is enabled (#9).
+- `TG801 rust-build-script`: flags Cargo build scripts (`build.rs`) and custom `build = "..."` definitions in `Cargo.toml` that run when the project is compiled or opened in rust-analyzer (#8).
 
 ## [0.2.0] - 2026-11-09
 

@@ -118,6 +118,7 @@ Linux, macOS and Windows. Anything listed there runs for *every* project you ope
 | Dev Containers | `.devcontainer/**/devcontainer.json`, `.devcontainer.json` | `initializeCommand` (runs on the host) and in-container lifecycle commands |
 | Git hooks & shell | `.husky/*`, `lefthook.yml`, `.pre-commit-config.yaml`, `.envrc`, `.nvim.lua`, `.nvimrc`, `.exrc` | hook scripts, local pre-commit entries, direnv files, Vim/Neovim local config |
 | GitHub Actions | `.github/workflows/*.yml` | `toJSON(secrets)` dumps; issue / PR / comment / discussion text interpolated into `run:` |
+| Rust | `build.rs`, `Cargo.toml` | `build.rs` and custom `build = "..."` scripts that Cargo and rust-analyzer run on build or workspace load |
 | Gradle | `gradle/wrapper/gradle-wrapper.properties` | wrapper downloading Gradle from outside `services.gradle.org` |
 | Everything above | | invisible Unicode: tag characters (decoded for you), bidi controls, zero-width characters |
 
