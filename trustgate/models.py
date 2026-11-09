@@ -92,6 +92,9 @@ _rule("TG302", "npmrc-risk", Severity.MEDIUM,
 _rule("TG303", "package-manager-exec", Severity.MEDIUM,
       "Package manager config makes yarn, pnpm or bun run JavaScript from the repository on every command or install.",
       "Read the referenced file before running the package manager; remove the setting if you did not expect it.")
+_rule("TG304", "composer-script", Severity.MEDIUM,
+      "composer.json defines an event script that runs automatically on install, update, or dump-autoload.",
+      "Run composer install with --no-scripts and review the scripts before running them.")
 _rule("TG400", "python-pth-exec", Severity.HIGH,
       "A .pth file contains import lines, which Python executes at interpreter start-up.",
       "Delete the .pth file or reduce it to plain path entries.")

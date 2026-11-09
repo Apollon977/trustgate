@@ -9,11 +9,11 @@ from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 from typing import Iterable, List, Optional, Sequence
 
-from .checks import Context, agents, build, devcontainer, hooks, node, python, vscode, workflows
+from .checks import Context, agents, build, devcontainer, hooks, node, php, python, vscode, workflows
 from .models import Finding, Severity
 from .unicode import find_hidden
 
-CHECKS = (vscode, agents, node, python, devcontainer, hooks, workflows, build)
+CHECKS = (vscode, agents, node, php, python, devcontainer, hooks, workflows, build)
 
 SKIP_DIRS = {".git", ".hg", ".svn", "node_modules", ".venv", "venv", "__pycache__", ".tox", ".nox",
              ".mypy_cache", ".pytest_cache", ".ruff_cache", ".gradle", ".terraform", ".next", ".cache"}
@@ -25,6 +25,7 @@ AUTORUN_NAMES = {
     ".pre-commit-config.yml", ".envrc", "lefthook.yml", "lefthook.yaml", ".lefthook.yml", ".lefthook.yaml",
     "lefthook-local.yml", "lefthook-local.yaml", ".yarnrc.yml", ".yarnrc", ".pnpmfile.cjs", "bunfig.toml",
     "pyproject.toml", "gradle-wrapper.properties",
+    "composer.json",
 }
 
 # Instruction files that AI coding agents read and follow. They do not run code, so they are

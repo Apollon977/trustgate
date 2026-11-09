@@ -19,6 +19,7 @@ Every finding has a rule id, a default severity and a fix. Some findings are rai
 | TG301 | `node-gyp-exec` | medium | binding.gyp triggers an implicit install build or runs shell command expansions. | Review every <!( ) expansion; install with --ignore-scripts until reviewed. |
 | TG302 | `npmrc-risk` | medium | A project .npmrc changes how npm executes scripts, where it downloads from, or contains a token. | Remove the setting from the committed .npmrc; keep tokens in your user config or CI secrets. |
 | TG303 | `package-manager-exec` | medium | Package manager config makes yarn, pnpm or bun run JavaScript from the repository on every command or install. | Read the referenced file before running the package manager; remove the setting if you did not expect it. |
+| TG304 | `composer-script` | medium | composer.json defines an event script that runs automatically on install, update, or dump-autoload. | Run composer install with --no-scripts and review the scripts before running them. |
 | TG400 | `python-pth-exec` | high | A .pth file contains import lines, which Python executes at interpreter start-up. | Delete the .pth file or reduce it to plain path entries. |
 | TG401 | `setup-py-exec` | medium | setup.py runs commands or fetches code at build/install time. | Build in an isolated environment and review the setup.py code paths. |
 | TG402 | `python-startup-hook` | medium | sitecustomize.py or usercustomize.py is shipped and runs whenever it lands on sys.path. | Remove the file unless the project explicitly documents why it needs it. |
