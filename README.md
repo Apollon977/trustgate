@@ -233,6 +233,13 @@ reports, false positives and new auto-run locations are all welcome. Security is
 
 The demo GIFs are generated from real runs by [`scripts/make_demos.py`](scripts/make_demos.py).
 
+### Contribution licence
+
+trustgate is released under the [MIT License](LICENSE). By submitting a pull request, patch
+or any other contribution to this repository, you agree that your contribution is licensed
+under the same MIT License, and you confirm that you have the right to submit it under that
+licence.
+
 ## License
 
 [MIT](LICENSE) © 2026 Kirtan Bhatt

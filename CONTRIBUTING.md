@@ -55,4 +55,6 @@ ideas.
 - Every new finding should come with a concrete fix in its rule's remediation text.
 - Keep messages short and specific; they are read in terminals and code-scanning UIs.
 
-By taking part you agree to the [code of conduct](CODE_OF_CONDUCT.md).
+By taking part you agree to the [code of conduct](CODE_OF_CONDUCT.md). Contributions are
+accepted under the project's MIT License; see
+[Contribution licence](README.md#contribution-licence) in the README.

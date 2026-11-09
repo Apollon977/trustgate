@@ -14,6 +14,18 @@ All notable changes are documented here. The format follows
 - `TG304 composer-script`: flags Composer event scripts in `composer.json` that run automatically on install, update, or autoload dump (#7).
 - `TG602 vim-exrc`: flags root-level Neovim / Vim configuration files (`.nvim.lua`, `.nvimrc`, `.exrc`, `.vimrc`) that run automatically when the editor opens the directory if `exrc` is enabled (#9).
 - `TG801 rust-build-script`: flags Cargo build scripts (`build.rs`) and custom `build = "..."` definitions in `Cargo.toml` that run when the project is compiled or opened in rust-analyzer (#8).
+- SARIF rules link to `docs/rules.md` through `helpUri`, so code scanning shows a "Learn more" link (#4).
+
+### Changed
+
+- TG203 is `medium` when an MCP server is launched with `npx`, `pnpm dlx`, `bunx` or `uvx` without an
+  exact version pin (no version, a moving tag such as `@latest`, or a range); exact pins stay `low` (#5).
+- CI and release workflows use `actions/checkout@v7`, `actions/setup-python@v7`,
+  `actions/upload-artifact@v7` and `actions/download-artifact@v8`.
+
+### Documentation
+
+- The README states that contributions are accepted under the project's MIT License.
 
 ## [0.2.0] - 2026-11-09
 
