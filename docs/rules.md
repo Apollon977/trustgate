@@ -28,6 +28,7 @@ Every finding has a rule id, a default severity and a fix. Some findings are rai
 | TG501 | `devcontainer-lifecycle-command` | low | A dev container lifecycle command runs automatically inside the container. | Review the command, especially if secrets or your SSH agent are forwarded. |
 | TG600 | `git-hook-script` | low | A git hook manager will run repository scripts on git operations. | Read the hook scripts before running the project's install or setup step. |
 | TG601 | `direnv-envrc` | medium | An .envrc file runs shell code when you cd into the directory (once allowed). | Read the file before running 'direnv allow'. |
+| TG602 | `vim-exrc` | low | A project-level Vim or Neovim config runs when the editor opens the directory (if exrc is enabled). | Read the configuration file before accepting the editor's trust prompt. |
 | TG700 | `workflow-secret-dump` | critical | A GitHub Actions workflow serialises the entire secrets context. | Delete the workflow and rotate every repository and organisation secret. |
 | TG701 | `workflow-untrusted-exec` | high | A workflow interpolates attacker-controlled event text directly into a shell step. | Pass the value through an environment variable and never execute it. |
 | TG800 | `gradle-wrapper-distribution` | medium | The Gradle wrapper downloads Gradle from a non-official location; IDEs run it when the project is imported. | Point distributionUrl at https://services.gradle.org/distributions/ and add distributionSha256Sum. |

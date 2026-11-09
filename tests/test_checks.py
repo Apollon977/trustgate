@@ -271,6 +271,25 @@ class OtherTests(unittest.TestCase):
         self.assertEqual(len(husky), 1)
         self.assertIn("npx lint-staged", husky[0].message)
 
+    def test_vim_neovim_exrc(self):
+        files = {
+            ".nvim.lua": "vim.opt.number = true\n",
+            ".nvimrc": "set number\n",
+            ".exrc": "set autoindent\n",
+            ".vimrc": "set ruler\n",
+            "sub/.exrc": "set autoindent\n",
+            "sub/.nvim.lua": "vim.opt.number = true\n",
+        }
+        with TempRepo(files) as root:
+            result = scan(str(root))
+        findings = [f for f in result.findings if f.rule_id == "TG602"]
+        self.assertEqual(len(findings), 4)
+        paths = sorted(f.path for f in findings)
+        self.assertEqual(paths, [".exrc", ".nvim.lua", ".nvimrc", ".vimrc"])
+        for f in findings:
+            self.assertEqual(f.severity, Severity.LOW)
+            self.assertEqual(f.line, 1)
+
     def test_remote_pre_commit_repos_ignored(self):
         text = "repos:\n  - repo: https://github.com/psf/black\n    rev: 24.1.0\n    hooks:\n      - id: black\n"
         with TempRepo({".pre-commit-config.yaml": text}) as root:

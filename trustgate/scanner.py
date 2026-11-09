@@ -26,6 +26,7 @@ AUTORUN_NAMES = {
     "lefthook-local.yml", "lefthook-local.yaml", ".yarnrc.yml", ".yarnrc", ".pnpmfile.cjs", "bunfig.toml",
     "pyproject.toml", "gradle-wrapper.properties",
     "composer.json",
+    ".nvim.lua", ".nvimrc", ".exrc", ".vimrc",
 }
 
 # Instruction files that AI coding agents read and follow. They do not run code, so they are

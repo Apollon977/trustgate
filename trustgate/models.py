@@ -119,6 +119,9 @@ _rule("TG600", "git-hook-script", Severity.LOW,
 _rule("TG601", "direnv-envrc", Severity.MEDIUM,
       "An .envrc file runs shell code when you cd into the directory (once allowed).",
       "Read the file before running 'direnv allow'.")
+_rule("TG602", "vim-exrc", Severity.LOW,
+      "A project-level Vim or Neovim config runs when the editor opens the directory (if exrc is enabled).",
+      "Read the configuration file before accepting the editor's trust prompt.")
 _rule("TG700", "workflow-secret-dump", Severity.CRITICAL,
       "A GitHub Actions workflow serialises the entire secrets context.",
       "Delete the workflow and rotate every repository and organisation secret.")

@@ -52,8 +52,21 @@ def _direnv(ctx: Context) -> None:
                 line=1, evidence="; ".join(ln.strip() for ln in lines[:3]))
 
 
+EXRC_FILES = {".nvim.lua", ".nvimrc", ".exrc", ".vimrc"}
+
+
+def _exrc(ctx: Context) -> None:
+    for rel in ctx.matching(lambda p: len(p.parts) == 1 and p.name in EXRC_FILES):
+        text = ctx.text(rel) or ""
+        lines = [ln for ln in text.splitlines() if ln.strip() and not ln.lstrip().startswith(("#", '"', "--"))]
+        evidence = "; ".join(ln.strip() for ln in lines[:3])
+        ctx.add("TG602", rel, f"{rel} runs automatically when Neovim or Vim opens this directory with 'exrc' enabled.",
+                line=1, evidence=evidence)
+
+
 def check(ctx: Context) -> None:
     _husky(ctx)
     _pre_commit(ctx)
     _lefthook(ctx)
     _direnv(ctx)
+    _exrc(ctx)

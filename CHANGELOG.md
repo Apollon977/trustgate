@@ -12,6 +12,7 @@ All notable changes are documented here. The format follows
   Lower-case ids work too; an unknown id exits with code 2.
 - `test_every_rule_has_a_test` in `tests/test_meta.py`: verifies that every registered rule in `RULES` is covered by at least one test. (#11)
 - `TG304 composer-script`: flags Composer event scripts in `composer.json` that run automatically on install, update, or autoload dump (#7).
+- `TG602 vim-exrc`: flags root-level Neovim / Vim configuration files (`.nvim.lua`, `.nvimrc`, `.exrc`, `.vimrc`) that run automatically when the editor opens the directory if `exrc` is enabled (#9).
 
 ## [0.2.0] - 2026-11-09
 
