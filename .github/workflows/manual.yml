@@ -37,9 +37,7 @@ jobs:
           import tempfile
           import yaml
           document = Path('docs/ci.md').read_text()
-          gitlab, circle = [yaml.safe_load(block) for block in re.findall(r'```yaml
-(.*?)
-```', document, re.S)]
+          gitlab, circle = [yaml.safe_load(block) for block in re.findall(r'```yaml'+chr(10)+r'(.*?)'+chr(10)+'```', document, re.S)]
           assert gitlab['trustgate']['artifacts']['when'] == 'always'
           assert circle['jobs']['trustgate']['steps'][-1]['store_artifacts']['path'] == 'trustgate.json'
           examples = {
@@ -54,8 +52,7 @@ jobs:
                   environment.update(PIPX_HOME=str(base / 'pipx'), PIPX_BIN_DIR=str(bindir), PATH=str(bindir) + ':' + environment['PATH'])
                   clean = base / 'clean'
                   clean.mkdir()
-                  subprocess.run(['bash', '-ec', '
-'.join(commands)], cwd=clean, env=environment, check=True)
+                  subprocess.run(['bash', '-ec', chr(10).join(commands)], cwd=clean, env=environment, check=True)
                   assert json.loads((clean / 'trustgate.json').read_text())['findings'] == []
                   trapped = base / 'trapped'
                   (trapped / '.vscode').mkdir(parents=True)
