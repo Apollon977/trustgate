@@ -1,0 +1,86 @@
+name: CI examples cloud validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/manual.yml]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    container: python:3.12-bookworm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: docs/gitlab-circleci
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Format and check documentation
+        run: |
+          npx --yes prettier@3.6.2 --write docs/ci.md README.md
+          npx --yes prettier@3.6.2 --check docs/ci.md README.md
+      - name: Install validation dependencies
+        run: python -m pip install pipx pyyaml
+      - name: Execute both providers' documented commands
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import os
+          import re
+          import subprocess
+          import tempfile
+          import yaml
+          document = Path('docs/ci.md').read_text()
+          gitlab, circle = [yaml.safe_load(block) for block in re.findall(r'```yaml
+(.*?)
+```', document, re.S)]
+          assert gitlab['trustgate']['artifacts']['when'] == 'always'
+          assert circle['jobs']['trustgate']['steps'][-1]['store_artifacts']['path'] == 'trustgate.json'
+          examples = {
+              'GitLab': gitlab['trustgate']['script'],
+              'CircleCI': [step['run']['command'] for step in circle['jobs']['trustgate']['steps'] if isinstance(step, dict) and 'run' in step],
+          }
+          for provider, commands in examples.items():
+              with tempfile.TemporaryDirectory() as temporary:
+                  base = Path(temporary)
+                  bindir = base / 'bin'
+                  environment = os.environ.copy()
+                  environment.update(PIPX_HOME=str(base / 'pipx'), PIPX_BIN_DIR=str(bindir), PATH=str(bindir) + ':' + environment['PATH'])
+                  clean = base / 'clean'
+                  clean.mkdir()
+                  subprocess.run(['bash', '-ec', '
+'.join(commands)], cwd=clean, env=environment, check=True)
+                  assert json.loads((clean / 'trustgate.json').read_text())['findings'] == []
+                  trapped = base / 'trapped'
+                  (trapped / '.vscode').mkdir(parents=True)
+                  task = {'version': '2.0.0', 'tasks': [{'label': 'example', 'type': 'shell', 'command': 'echo example', 'runOptions': {'runOn': 'folderOpen'}}]}
+                  (trapped / '.vscode/tasks.json').write_text(json.dumps(task))
+                  result = subprocess.run(['bash', '-ec', commands[-1]], cwd=trapped, env=environment)
+                  assert result.returncode == 1
+                  assert json.loads((trapped / 'trustgate.json').read_text())['findings']
+                  print(provider + ': installation, exit 0, exit 1 and JSON report verified', flush=True)
+          PY
+      - name: Run repository tests
+        run: |
+          python -m unittest discover -s tests -t tests
+          python -m trustgate scan . --fail-on medium --exclude tests/fixtures
+      - name: Show formatted README
+        run: |
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          print('FORMATTED_README_BASE64=' + base64.b64encode(Path('README.md').read_bytes()).decode())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: formatted-docs
+          path: |
+            README.md
+            docs/ci.md
+          retention-days: 7
