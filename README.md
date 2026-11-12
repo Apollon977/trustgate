@@ -131,6 +131,8 @@ normal). The value is that nothing runs without you knowing.
 
 ## CI
 
+For other CI providers, see the [GitLab CI and CircleCI examples](docs/ci.md).
+
 ### GitHub Action
 
 ```yaml
